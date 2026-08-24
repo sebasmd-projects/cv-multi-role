@@ -1,0 +1,48 @@
+{
+  "name": "cv-multi-rol",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.0.0 <23"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "spike": "node scripts/spike.mjs",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx src/db/seed.ts"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.1.6",
+    "bcryptjs": "^2.4.3",
+    "drizzle-orm": "^0.45.2",
+    "mysql2": "^3.11.5",
+    "next": "16.3.2",
+    "next-auth": "^5.0.0-beta.25",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.2",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "optionalDependencies": {
+    "@react-three/fiber": "^9.0.0",
+    "three": "^0.171.0",
+    "@types/three": "^0.171.0"
+  }
+}

@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens §7 — "terminal de fósforo". Ningún color fuera de esta lista. */
+:root {
+  --void:     #0A0B10;
+  --surface:  #12141C;
+  --line:     #232739;
+  --phosphor: #FFC14D;
+  --signal:   #4DE0F5;
+  --pulse:    #FF5FA2;
+  --text:     #E6E8F0;
+  --muted:    #8A90A6;
+
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.86rem);
+  --step-0:  clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+  --step-1:  clamp(1.2rem, 1.1rem + 0.5vw, 1.45rem);
+  --step-3:  clamp(2rem, 1.6rem + 2vw, 3.4rem);
+}
+
+html { color-scheme: dark; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-size: var(--step-0);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* Cifras y fechas en tabulares: sin esto, los números bailan al cambiar. */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Foco visible sobre fondo oscuro. --line (1.3:1) no basta para comunicar
+   estado, así que el anillo usa --signal. */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Consola del hero ─────────────────────────────────────────────
+   El contenido llega completo desde el servidor. Esto solo lo revela
+   de forma escalonada; sin JS funciona igual, y bajo reduced-motion
+   la regla global de arriba lo deja instantáneo.                     */
+.console-line {
+  animation: line-in 260ms ease-out backwards;
+  animation-delay: calc(var(--i) * 90ms + 200ms);
+}
+
+@keyframes line-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.caret { animation: blink 1.1s step-end infinite; }
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* View Transitions: navegación a casos de estudio, cambio de variante.
+   Degrada en silencio donde la API no exista. */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+}
+
+/* ── Respaldo de impresión (§9) ───────────────────────────────────
+   Si alguien imprime la página en vez de descargar el PDF, no debe
+   salir un rectángulo negro de 12 páginas.                           */
+@media print {
+  :root {
+    --void: #FFFFFF; --surface: #FFFFFF; --line: #CCCCCC;
+    --text: #141414; --muted: #555555;
+    --phosphor: #B26B00; --signal: #0B5F73; --pulse: #A3115C;
+  }
+
+  body { background: #FFFFFF; color: #141414; font-size: 10pt; }
+
+  .console, nav, footer, [data-print="hide"] { display: none !important; }
+
+  section { break-inside: avoid; border-top: 1px solid #CCCCCC; }
+  h1, h2, h3 { break-after: avoid; }
+
+  /* Los enlaces impresos sin URL son inútiles. */
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #555555; }
+}
