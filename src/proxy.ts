@@ -56,9 +56,16 @@ export function proxy(request: NextRequest) {
   /* ── 2. Nonce de CSP ──────────────────────────────────────────── */
 
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+  // React/Next usan eval() en modo dev para el fast refresh y la
+  // reconstrucción de stack traces; 'unsafe-eval' solo se relaja aquí,
+  // nunca en producción.
+  const scriptSrc =
+    process.env.NODE_ENV === 'production'
+      ? `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`
+      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval'`;
   const csp = [
     `default-src 'self'`,
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    scriptSrc,
     // Los atributos style="" inline (índice de animación, view-transition-name
     // por slug) no pueden llevar nonce: la CSP solo lo aplica a <style>/<script>.
     // El riesgo de inyección vía style es mucho menor que vía script, así que
