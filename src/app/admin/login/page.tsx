@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { LoginForm } from './login-form';
+import { TypedName } from '@/components/typed-name';
 import '../../globals.css';
 
 // El panel nunca debe aparecer en un buscador.
@@ -16,7 +17,7 @@ export default async function LoginPage() {
       <body className="grid min-h-dvh place-items-center px-5">
         <main className="w-full max-w-sm">
           <p className="mb-8 font-mono text-[var(--phosphor)]">
-            SM<span aria-hidden="true">▍</span>
+            <TypedName name="Sebastian Morales" />
           </p>
           <h1 className="text-[var(--step-1)]">Panel</h1>
           <p className="mb-6 mt-1 text-[var(--step--1)] text-[var(--muted)]">

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth, signOut } from '@/auth';
+import { TypedName } from '@/components/typed-name';
 import '../../globals.css';
 
 /**
@@ -30,7 +31,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div className="mx-auto flex max-w-[1400px] flex-col md:flex-row">
           <aside className="border-b border-[var(--line)] md:min-h-dvh md:w-56 md:border-b-0 md:border-r">
             <div className="px-5 py-5 font-mono text-[var(--step--1)] text-[var(--phosphor)]">
-              SM<span aria-hidden="true">▍</span>
+              <TypedName name="Sebastian Morales" />
             </div>
             <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:overflow-visible">
               {NAV.map(([href, label]) => (

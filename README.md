@@ -11,7 +11,7 @@ Desplegado en cPanel (Conexcol) bajo Passenger, sobre MariaDB.
 
 ---
 
-## La tesis
+## Descripción
 
 El sitio es la demostración de lo que dice el CV: **el mismo dato, servido
 según el contexto, sin trabajo manual.**
@@ -213,17 +213,3 @@ archivos, sin rutas duplicadas que puedan divergir.
 | 5 | Analítica, transparencia, políticas de IA | hecho |
 | 6 | View Transitions, pieza 3D | hecho |
 | 7 | Auditoría Lighthouse/a11y + despliegue | pendiente |
-
-### Pendiente de decisión de Sebastian
-
-1. **`Test Automation Engineer`** — si el cargo en nómina era literalmente
-   «Analista de Pruebas» y el cambio incomoda, la alternativa es
-   `Test Analyst — Automation`. Es un campo en `src/content/cv.ts`.
-2. **`Disponible ahora`** — el brief decía «Disponible desde abril 2026», que ya
-   está en el pasado y le dice a un reclutador «llevo meses sin colocarme».
-3. **Los cinco casos de estudio** están redactados a partir de sus datos y
-   entran con `is_draft = true`. Ninguna afirmación técnica sale de algo que no
-   estuviera en el brief, pero el redactado es interpretación y hay que
-   sostenerlo en entrevista. Se aprueban uno a uno desde `/admin`.
-4. **Ajustar LinkedIn** a las fechas corregidas (Agua Viva termina 08/2024).
-   Un reclutador contrasta las dos fuentes.

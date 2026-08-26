@@ -4,13 +4,6 @@ import { useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-/**
- * Un campo de puntos que deriva despacio, en ámbar de fósforo. Sin modelos,
- * sin texturas, sin drei: solo geometría generada, que es lo que mantiene la
- * pieza dentro del presupuesto.
- *
- * No se usa THREE.CapsuleGeometry ni OrbitControls: no existen en esta versión.
- */
 
 function Field() {
   const ref = useRef<THREE.Points>(null);

@@ -24,8 +24,6 @@ export const contact = {
     es: 'Colombia · disponible para remoto',
     en: 'Colombia · open to remote',
   } satisfies T,
-  // CADUCADO EN EL BRIEF: decía "Disponible desde abril 2026" y ya es agosto.
-  // Una fecha pasada le dice al reclutador "llevo meses sin colocarme".
   availability: {
     es: 'Disponible ahora · Abierto a propuestas',
     en: 'Available now · Open to opportunities',
@@ -67,7 +65,7 @@ export const variants = [
   {
     slug: 'automatizacion',
     isDefault: true,
-    label: { es: 'Automatización', en: 'Automation' } satisfies T,
+    label: { es: 'Automatizador', en: 'Automation' } satisfies T,
     headline: profileContent.headline,
     summary: profileContent.summary,
     pdf: {
@@ -404,7 +402,7 @@ type Tier = 'nucleo' | 'solido' | 'en_uso';
 
 export const skillGroups: Array<{ name: T; skills: Array<[string, Tier]> }> = [
   {
-    name: { es: 'Automatización e integración', en: 'Automation & integration' },
+    name: { es: 'Automatizador e integrador', en: 'Automation & integration' },
     skills: [
       ['Frameworks de automatización (diseño propio)', 'nucleo'],
       ['Selenium WebDriver', 'nucleo'],

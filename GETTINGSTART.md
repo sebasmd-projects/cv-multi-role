@@ -62,8 +62,8 @@ DB_NAME=cpaneluser_cv
 DB_USER=cpaneluser_cvadmin
 DB_PASSWORD=…
 
-AUTH_SECRET=…              # genera: openssl rand -base64 32
 AUTH_URL=https://sebasmoralesd.com
+AUTH_SECRET=…              # genera: openssl rand -base64 32
 ADMIN_EMAIL=sebasmoralesd@gmail.com
 ADMIN_PASSWORD_HASH=…      # ver paso 4
 
@@ -87,7 +87,16 @@ guarda en ningún archivo.**
 ```bash
 npm run db:generate    # genera drizzle/*.sql desde src/db/schema.ts
 npm run db:migrate     # aplica sobre MariaDB
+npm run db:charset     # base y tablas a utf8mb4
 ```
+
+El sitio cachea el CV por etiqueta durante una hora y solo lo invalida al
+publicar desde `/admin`. Sembrar desde la terminal pasa por fuera de eso: si el
+servidor de desarrollo ya estaba corriendo, reinícialo o no verás los cambios.
+
+`db:charset` no es opcional. cPanel crea las bases en `latin1_swedish_ci` y las
+tablas heredan ese juego de caracteres: las tildes pasan, pero «→» se guarda
+como «?» y no se recupera salvo volviendo a sembrar. Ejecútalo antes del seed.
 
 > Si `db:migrate` falla por permisos sobre `INFORMATION_SCHEMA` —pasa en
 > hosting compartido— abre **phpMyAdmin → SQL** y pega `drizzle/0000_init.sql`
@@ -311,7 +320,7 @@ datos no se toca en un despliegue, así que el contenido sobrevive intacto.
 | Sitio sin estilos | No copiaste `.next/static` | `cp -r .next/static .next/standalone/.next/static` |
 | Acentos rotos, `→` corrupto | Base en `latin1` | Paso 2, y **volver a sembrar** |
 | `/cv.pdf` da 500 | `PDF_CACHE_DIR` no escribible | `mkdir -p ~/tmp/pdf-cache` |
-| `/admin` en bucle de login | `AUTH_SECRET` o `AUTH_URL` mal | Deben coincidir con el dominio real |
+| `/admin` en bucle de login | `AUTH_URL` mal | Deben coincidir con el dominio real |
 | Todo en español pese a `/en` | `proxy.ts` no se ejecuta | Ver abajo |
 | 429 al descargar | Limitador: 10 PDF por minuto | Es lo esperado; espera un minuto |
 

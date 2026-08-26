@@ -14,7 +14,7 @@ function SectionHeading({ id, children }: { id: string; children: React.ReactNod
   return (
     <h2
       id={id}
-      className="mb-8 font-[family-name:var(--font-mono)] text-[var(--step--1)] uppercase tracking-[0.2em] text-[var(--muted)]"
+      className="mb-8 scroll-mt-24 font-[family-name:var(--font-mono)] text-[var(--step--1)] uppercase tracking-[0.2em] text-[var(--muted)]"
     >
       {children}
     </h2>
@@ -238,8 +238,16 @@ export function Contact({ cv }: { cv: Cv }) {
           </li>
           {cv.profile.phone ? (
             <li>
-              <a href={`tel:${cv.profile.phone.replace(/\s/g, '')}`} className="text-[var(--signal)] hover:text-[var(--phosphor)]">
+              {/* WhatsApp y no `tel:`: quien lee esto suele estar en un
+                  escritorio, donde marcar no lleva a ninguna parte. */}
+              <a
+                href={`https://wa.me/${cv.profile.phone.replace(/\D/g, '')}`}
+                target="_blank"
+                rel="noopener"
+                className="text-[var(--signal)] hover:text-[var(--phosphor)]"
+              >
                 {cv.profile.phone}
+                <span className="sr-only"> (WhatsApp)</span>
               </a>
             </li>
           ) : null}
@@ -252,8 +260,6 @@ export function Contact({ cv }: { cv: Cv }) {
           ))}
         </ul>
       </address>
-
-      <p className="mt-10 max-w-md text-[var(--step--1)] text-[var(--muted)]">{t.privacy}</p>
     </section>
   );
 }

@@ -60,15 +60,80 @@ p { text-wrap: pretty; }
   animation-delay: calc(var(--i) * 90ms + 200ms);
 }
 
+/* El arranque se teclea una vez por carga. Cambiar de variante no es un
+   arranque: casi siempre son las mismas cifras y repetir el tecleo se lee
+   como si la página se hubiera recargado. `data-booted` lo marca (§7). */
+html[data-booted] .console-line {
+  animation: none;
+}
+
+/* Lo mismo para la firma: ya está escrita, solo queda el cursor esperando. */
+html[data-booted] .typed {
+  animation: none;
+}
+
 @keyframes line-in {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: none; }
 }
 
-.caret { animation: blink 1.1s step-end infinite; }
+/* Un solo cursor para todo el sitio: la consola y la firma usan este mismo
+   elemento. Barra fina a la altura del texto, no el bloque «▍», que a tamaño
+   de titular se lee como un carácter más y no como un cursor. */
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background: currentColor;
+  vertical-align: -0.12em;
+  animation: blink 1.1s step-end infinite;
+}
 
 @keyframes blink {
   50% { opacity: 0; }
+}
+
+/* ── Firma tecleada ───────────────────────────────────────────────
+   El nombre entra carácter a carácter recortando el ancho en pasos.
+   Funciona porque la fuente es monoespaciada: `1ch` es un carácter, así
+   que `steps(--chars)` cae justo en cada letra. El cursor es el hermano
+   `.caret`, que al ser inline queda pegado al borde del recorte — o sea,
+   justo donde se está escribiendo.                                    */
+.typed-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.12em;
+  white-space: nowrap;
+}
+
+.typed {
+  /* `ch` es el avance del «0», que se queda un ~1 % por debajo del avance
+     real de las letras —medido en JetBrains Mono y en la mono del sistema que
+     usa /admin—: sin compensarlo, el último carácter entra cortado. */
+  --advance: 1.015ch;
+
+  overflow: hidden;
+  /* Tailwind pone `border-box` en todo; aquí el ancho animado es el del
+     texto y nada más. */
+  box-sizing: content-box;
+  width: calc(var(--chars) * var(--advance));
+  /* `jump-start`: el primer carácter cae en el fotograma inicial, así que
+     arranca en `<|` y no en un cursor solo. */
+  animation: typing calc(var(--chars) * 60ms) steps(var(--chars), jump-start) both;
+}
+
+@keyframes typing {
+  from { width: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* El cursor sigue parpadeando: son 2 px de opacidad, no movimiento, y sin
+     él la firma parece texto cortado a media palabra. El tecleo sí se salta
+     —ahí sí hay contenido desplazándose—, así que el nombre aparece entero. */
+  .caret {
+    animation-duration: 1.1s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 /* View Transitions: navegación a casos de estudio, cambio de variante.
@@ -78,6 +143,34 @@ p { text-wrap: pretty; }
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 220ms;
+}
+
+/* El overlay de la transición se come los clics mientras dura; con el
+   conmutador de variante eso significa perder pulsaciones seguidas. */
+::view-transition { pointer-events: none; }
+
+/* Cambio de variante: el cuerpo del CV se funde, la consola y la cabecera
+   se quedan quietas para que el cambio no se lea como recarga (§7). */
+::view-transition-group(.cv-swap) { animation-duration: 260ms; }
+::view-transition-old(.cv-swap) { animation: 120ms ease-in both fade reverse; }
+::view-transition-new(.cv-swap) { animation: 200ms ease-out 90ms both fade; }
+
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+::view-transition-group(console-anchor) { animation: none; z-index: 10; }
+::view-transition-old(console-anchor) { display: none; }
+::view-transition-new(console-anchor) { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+  }
 }
 
 /* ── Respaldo de impresión (§9) ───────────────────────────────────

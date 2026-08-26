@@ -1,0 +1,16 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cv-multi-rol",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "cv-multi-rol (attach)",
+      "url": "http://localhost:3000",
+      "port": 3000
+    }
+  ]
+}

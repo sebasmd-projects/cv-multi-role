@@ -47,6 +47,7 @@ export const ui = {
     confidential: 'Proyecto de cliente · presentado sin datos identificables',
     tiers: { nucleo: 'núcleo', solido: 'sólido', en_uso: 'en uso' } as const,
     sections: {
+      nav: 'Secciones',
       experience: 'Experiencia',
       skills: 'Habilidades',
       projects: 'Muestra de trabajo',
@@ -77,6 +78,7 @@ export const ui = {
     confidential: 'Client project · presented without identifying data',
     tiers: { nucleo: 'core', solido: 'strong', en_uso: 'in use' } as const,
     sections: {
+      nav: 'Sections',
       experience: 'Experience',
       skills: 'Skills',
       projects: 'Selected work',
